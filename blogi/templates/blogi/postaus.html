@@ -1,1 +1,17 @@
-Tähän tulee teksti
+<html>
+    <head>
+        <title>Koodausblogi</title>
+    </head>
+    <body>
+        <h1>Koodausblogi - Postaus</h1>
+        <h2>{{postaus.otsikko}}</h2>
+        <p>
+            {{postaus.teksti}}
+            <hr>
+            Jotain tekstiä viivan jälkeen.
+        </p>
+        <a href="{% url 'postauslista' %}">Postaukset</a>
+
+    </body>
+</html>
+

@@ -15,4 +15,6 @@ def postaukset(request):
 
 
 def nayta_postaus(request, id):
-    return render(request, "blogi/postaus.html")
+    postaus = Postaus.objects.get(id=id)
+    context = {"postaus": postaus}
+    return render(request, "blogi/postaus.html", context)
