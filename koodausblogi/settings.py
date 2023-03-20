@@ -8,9 +8,25 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+
 import dj_database_url
+
+SENTRY_DSN = os.environ.get("SENTRY_DSN")
+
+if SENTRY_DSN:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=1.0,
+        send_default_pii=True
+    )
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 # Määritä MEDIA_ROOT. Se on tiedostopolku kansioon, jonka alle
 # tallennetaan ladatut tiedostot.
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -95,7 +111,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
 # Käytä DropBoxia tiedostojen tallentamiseen jos DROPBOX_APP_KEY on asetettu
 DROPBOX_APP_KEY = os.environ.get('DROPBOX_APP_KEY')
 if DROPBOX_APP_KEY:
@@ -109,8 +124,6 @@ if DROPBOX_APP_KEY:
     DROPBOX_OAUTH2_REFRESH_TOKEN = os.environ['DROPBOX_OAUTH2_REFRESH_TOKEN']
     # Aseta DropBox Djangon oletus-storageksi
     DEFAULT_FILE_STORAGE = 'storages.backends.dropbox.DropBoxStorage'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
